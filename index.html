@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Crazyvai Hack</title>
+    <style>
+        :root { --neon: #00ffcc; --warn: #ffcc00; --err: #ff3366; --panel: rgba(5, 8, 15, 0.98); }
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; overflow: hidden; font-family: 'Consolas', monospace; }
+
+        /* Floating Core */
+        #titan-core {
+            position: fixed; top: 150px; left: 20px; width: 60px; height: 60px;
+            background: #000; border: 2px solid var(--neon); border-radius: 15px;
+            z-index: 10002; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 0 20px var(--neon); cursor: pointer; touch-action: none;
+            transform: rotate(45deg); transition: 0.3s;
+        }
+        #titan-core span { transform: rotate(-45deg); color: var(--neon); font-weight: bold; font-size: 10px; text-align: center; }
+
+        /* Crazyvai Panel */
+        #titan-panel {
+            display: none; position: fixed; top: 110px; left: 100px;
+            width: 280px; z-index: 10001; touch-action: none;
+        }
+
+        .titan-card {
+            background: var(--panel); border: 2px solid var(--neon);
+            border-radius: 10px; padding: 20px; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(0, 255, 204, 0.3); border-left: 5px solid var(--neon);
+        }
+
+        .drag-handle { height: 12px; background: #111; margin-bottom: 15px; cursor: move; border: 1px solid #222; position: relative; }
+        .drag-handle::after { content: 'CRAZYVAI SECURITY INTERFACE'; position: absolute; font-size: 7px; color: #444; left: 5px; top: 1px; }
+
+        /* Engine Stats */
+        .stat-row { display: flex; justify-content: space-between; font-size: 9px; color: var(--neon); margin-bottom: 12px; border-bottom: 1px solid #1a1d23; padding-bottom: 5px; }
+        .data-display { background: rgba(0,0,0,0.8); padding: 15px; border: 1px solid #1a1d23; margin-bottom: 15px; text-align: center; border-radius: 5px; }
+        
+        .timer-big { font-size: 35px; font-weight: bold; color: var(--warn); }
+        .signal-big { font-size: 42px; font-weight: 900; margin: 10px 0; letter-spacing: 5px; }
+
+        /* Infinity Loader */
+        .inf-loader { height: 2px; width: 100%; background: #111; margin: 10px 0; overflow: hidden; }
+        .inf-fill { height: 100%; width: 50%; background: var(--neon); animation: slide-inf 1s infinite linear; }
+        @keyframes slide-inf { from { margin-left: -50%; } to { margin-left: 100%; } }
+
+        /* Site Frame */
+        #web-view { width: 100%; height: 100vh; border: none; }
+
+        /* Auth Screen */
+        #auth-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.98);
+            z-index: 10005; justify-content: center; align-items: center;
+        }
+        .auth-box { background: #0a0a0a; border: 1px solid var(--neon); padding: 40px; text-align: center; border-radius: 5px; }
+        .auth-box input { width: 100%; padding: 15px; margin: 20px 0; background: #000; border: 1px solid #333; color: var(--neon); text-align: center; outline: none; font-size: 22px; }
+        .auth-btn { background: var(--neon); color: #000; padding: 15px; border: none; width: 100%; font-weight: bold; cursor: pointer; font-size: 16px; }
+    </style>
+</head>
+<body>
+
+    <iframe id="web-view" src="https://15bdwin24.com/register?inviteCode=VRJ86BN&from=web"></iframe>
+
+    <div id="titan-core" onclick="initSystem()">
+        <span>CRAZY<br>VAI</span>
+    </div>
+
+    <div id="titan-panel">
+        <div class="titan-card">
+            <div class="drag-handle" id="move-me"></div>
+            
+            <div class="stat-row">
+                <span>PROTOCOL: <b style="color:#fff">INFINITY</b></span>
+                <span>SYNC: 100%</span>
+            </div>
+
+            <div class="data-display">
+                <div style="font-size: 8px; color: #555;">NEXT SEQUENCE</div>
+                <div id="timer" class="timer-big">00</div>
+            </div>
+
+            <div class="data-display" style="border-left: 3px solid var(--neon);">
+                <div style="font-size: 8px; color: #555;">CRAZY SIGNAL</div>
+                <div id="signal" class="signal-big" style="color:#1a1d23">---</div>
+                <div class="inf-loader"><div class="inf-fill"></div></div>
+                <div style="font-size: 7px; color: var(--neon); margin-top: 5px;">DEEP PATTERN ANALYSIS ACTIVE</div>
+            </div>
+
+            <button onclick="minimize()" style="width:100%; background:none; border:1px solid #222; color:#444; font-size:9px; padding:5px; cursor:pointer;">MINIMIZE INTERFACE</button>
+        </div>
+    </div>
+
+    <div id="auth-overlay">
+        <div class="auth-box">
+            <h1 style="color: var(--neon); margin: 0; font-size: 20px;">CRAZYVAI AUTH</h1>
+            <p style="color: #444; font-size: 9px; margin-top: 5px;">SYSTEM VERSION 8.0.4 - ENCRYPTED</p>
+            <input type="password" id="accessKey" placeholder="KEY">
+            <button class="auth-btn" onclick="activateCore()">UNLEASH HACK</button>
+        </div>
+    </div>
+
+    <script>
+        const MASTER_KEY = "cx2026";
+        let isActivated = false;
+
+        function initSystem() {
+            if(!isActivated) {
+                document.getElementById('auth-overlay').style.display = 'flex';
+            } else {
+                let p = document.getElementById('titan-panel');
+                p.style.display = (p.style.display === 'none' || p.style.display === '') ? 'block' : 'none';
+            }
+        }
+
+        function minimize() { document.getElementById('titan-panel').style.display = 'none'; }
+
+        function activateCore() {
+            if(document.getElementById('accessKey').value === MASTER_KEY) {
+                isActivated = true;
+                document.getElementById('auth-overlay').style.display = 'none';
+                document.getElementById('titan-panel').style.display = 'block';
+                startInfinityEngine();
+            } else { alert("ACCESS DENIED: KEY MISMATCH"); }
+        }
+
+        function startInfinityEngine() {
+            setInterval(() => {
+                const now = new Date();
+                const sec = now.getSeconds();
+                let rem = 30 - (sec % 30);
+                if(rem === 30) rem = 0;
+                document.getElementById('timer').innerText = rem < 10 ? "0"+rem : rem;
+
+                if(rem === 28) {
+                    const s = document.getElementById('signal');
+                    s.innerText = "SYNC"; s.style.color = "#222"; s.style.fontSize = "24px";
+                    
+                    setTimeout(() => {
+                        const pattern = Math.floor(Math.random() * 100);
+                        const result = pattern > 50 ? "BIG" : "SMALL";
+                        s.innerText = result;
+                        s.style.fontSize = "42px";
+                        s.style.color = (result === "BIG") ? "#00ffcc" : "#ff3366";
+                        s.style.textShadow = `0 0 20px ${result === "BIG" ? "#00ffcc" : "#ff3366"}`;
+                    }, 4000); 
+                }
+
+                if(rem <= 2 && rem > 0) {
+                    const s = document.getElementById('signal');
+                    s.innerText = "LOCK"; s.style.color = "#ffcc00"; s.style.fontSize = "24px";
+                }
+            }, 1000);
+        }
+
+        function setupDrag(el, handle) {
+            let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
+            handle.onmousedown = handle.ontouchstart = (e) => {
+                p3 = e.clientX || e.touches[0].clientX;
+                p4 = e.clientY || e.touches[0].clientY;
+                document.onmouseup = document.ontouchend = () => { document.onmousemove = document.ontouchmove = null; };
+                document.onmousemove = document.ontouchmove = (ev) => {
+                    p1 = p3 - (ev.clientX || ev.touches[0].clientX);
+                    p2 = p4 - (ev.clientY || ev.touches[0].clientY);
+                    p3 = ev.clientX || ev.touches[0].clientX;
+                    p4 = ev.clientY || ev.touches[0].clientY;
+                    el.style.top = (el.offsetTop - p2) + "px";
+                    el.style.left = (el.offsetLeft - p1) + "px";
+                };
+            };
+        }
+
+        setupDrag(document.getElementById("titan-core"), document.getElementById("titan-core"));
+        setupDrag(document.getElementById("titan-panel"), document.getElementById("move-me"));
+    </script>
+</body>
+</html>
